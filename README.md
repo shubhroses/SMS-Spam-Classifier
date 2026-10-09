@@ -32,7 +32,6 @@ The saved outputs come from Python 3.7 with `transformers` 4.18.0 and `datasets`
 
 To run it, open `sms_spam_classifier.ipynb` in Google Colab or Jupyter and run the cells from top to bottom.
 
-- On current IPython (checked with 9.17.1) the first cell stops at the line `% matplotlib inline` with the error "Line magic function `%` not found", because of the space after the percent sign. The scikit-learn, pandas, NumPy, `math` and `tqdm` imports below that line then do not run. Removing the space, or the whole line, avoids this; the notebook does not draw any plots.
 - On current `datasets` (checked with 5.1.0, with `huggingface_hub` 1.33.0) the call `datasets.load_dataset('sms_spam')` fails with an `HfUriError`: "Repository id must be 'namespace/name', got 'sms_spam'". Changing the name to `ucirvine/sms_spam` avoids this; it loads 5574 messages with the same `sms` and `label` fields.
 - The notebook installs `transformers` and `datasets` itself with `pip`, without pinning versions. It also imports `torch`, `scikit-learn`, `pandas`, `numpy`, `matplotlib` and `tqdm`. Colab already had these when the notebook was run; install them first if you run it somewhere else.
 - The first run downloads the `roberta-base` weights (478M in the saved output) and the dataset, so it needs internet access.
