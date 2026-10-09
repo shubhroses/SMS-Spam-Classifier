@@ -7,7 +7,7 @@ The notebook is `sms_spam_classifier.ipynb`. It was run in Google Colab, and the
 ## Approach
 
 1. **Embeddings.** The notebook loads the `roberta-base` tokenizer and model from Hugging Face `transformers`, the model with `output_hidden_states=True`. Each message is tokenized without RoBERTa's start and end tokens and run through the model in evaluation mode with gradients disabled. The notebook takes the second-to-last hidden layer and averages it over the tokens, which gives one vector of 768 values per message. RoBERTa is used only as a fixed feature extractor; it is not fine-tuned.
-2. **Data.** The `sms_spam` dataset is loaded with Hugging Face `datasets`: 5574 messages labeled 1 for spam and 0 for ham. The first 70% of the messages, in their original order, are the training set and the rest are the test set.
+2. **Data.** The `ucirvine/sms_spam` dataset is loaded with Hugging Face `datasets`: 5574 messages labeled 1 for spam and 0 for ham. The first 70% of the messages, in their original order, are the training set and the rest are the test set.
 3. **Classifiers.** Gaussian Naive Bayes, a random forest, logistic regression and a multi-layer perceptron (`MLPClassifier`) are fitted on the training embeddings, each with scikit-learn's default settings.
 4. **Evaluation.** Each model is scored on the test set for accuracy, and for precision, recall and F1 on the spam class.
 
@@ -32,7 +32,6 @@ The saved outputs come from Python 3.7 with `transformers` 4.18.0 and `datasets`
 
 To run it, open `sms_spam_classifier.ipynb` in Google Colab or Jupyter and run the cells from top to bottom.
 
-- On current `datasets` (checked with 5.1.0, with `huggingface_hub` 1.33.0) the call `datasets.load_dataset('sms_spam')` fails with an `HfUriError`: "Repository id must be 'namespace/name', got 'sms_spam'". Changing the name to `ucirvine/sms_spam` avoids this; it loads 5574 messages with the same `sms` and `label` fields.
 - The notebook installs `transformers` and `datasets` itself with `pip`, without pinning versions. It also imports `torch`, `scikit-learn`, `pandas`, `numpy`, `matplotlib` and `tqdm`. Colab already had these when the notebook was run; install them first if you run it somewhere else.
 - The first run downloads the `roberta-base` weights (478M in the saved output) and the dataset, so it needs internet access.
 - The model runs on the CPU, one message at a time, with no batching.
@@ -47,5 +46,5 @@ To run it, open `sms_spam_classifier.ipynb` in Google Colab or Jupyter and run t
 ## Credits
 
 - The embedding code follows the [BERT Word Embeddings Tutorial](https://mccormickml.com/2019/05/14/BERT-word-embeddings-tutorial/) by Chris McCormick and Nick Ryan (2019, May 14). Most of the lines of `sen_2_embed` and its variable names come from that tutorial, as does the `from_pretrained` call, with `BertModel` replaced by `RobertaModel`.
-- The data is the SMS Spam Collection, described in "Contributions to the study of SMS Spam Filtering: New Collection and Results" by T.A. Almeida, J.M. Gomez Hidalgo and A. Yamakami. The notebook loads it from the Hugging Face Hub as `sms_spam`, which the Hub now lists as [`ucirvine/sms_spam`](https://huggingface.co/datasets/ucirvine/sms_spam).
+- The data is the SMS Spam Collection, described in "Contributions to the study of SMS Spam Filtering: New Collection and Results" by T.A. Almeida, J.M. Gomez Hidalgo and A. Yamakami. The notebook loads it from the Hugging Face Hub as [`ucirvine/sms_spam`](https://huggingface.co/datasets/ucirvine/sms_spam), which the Hub used to list as `sms_spam`.
 - The pretrained model is `roberta-base`, which the Hub now lists as [`FacebookAI/roberta-base`](https://huggingface.co/FacebookAI/roberta-base).
