@@ -35,7 +35,7 @@ The outputs saved in the notebook are from the original run in 2022, in Google C
 - `% matplotlib inline` in the first cell is now `%matplotlib inline`.
 - `datasets.load_dataset('sms_spam')` is now `datasets.load_dataset('ucirvine/sms_spam')`. The output saved under that cell still shows the old name.
 
-With those two changes the notebook runs on current versions of its libraries, and `requirements.txt` pins the versions it was checked with. To run it in Jupyter, with Python 3.12 or newer:
+With those two changes the notebook runs on current versions of its libraries, and `requirements.txt` pins the versions it was checked with. To run it in Jupyter, with Python 3.12, 3.13 or 3.14:
 
 ```sh
 python3 -m venv .venv
@@ -46,12 +46,12 @@ jupyter notebook sms_spam_classifier.ipynb
 
 Then run the cells from top to bottom.
 
-- `requirements.txt` lists the libraries the notebook imports, pinned to the versions it was last run with. Those versions need Python 3.12 or newer; the run used 3.13.
+- `requirements.txt` lists the libraries the notebook imports, pinned to the versions it was last run with. Those versions need Python 3.12, 3.13 or 3.14: `numpy` 2.5.3 needs 3.12 or newer, and `torch` 2.14.1 has no build for Python 3.15. If `python3` is another version, name one of the three in the first command, for example `python3.13 -m venv .venv`. The runs described below used 3.13 and 3.14.
 - `notebook` is the Jupyter front end. `ipywidgets` is for the download progress bars; without it the first cell prints a `TqdmWarning`.
 - The notebook also runs `pip install transformers` and `pip install datasets` itself, without pinning versions. In the environment above both lines find the packages already installed and change nothing.
 - In Google Colab, where the saved outputs were produced, `requirements.txt` is not used. The two `pip install` lines take care of `transformers` and `datasets`, and the notebook relies on Colab for the other libraries. Colab has not been tried again since then.
 - The first run downloads the `roberta-base` weights (about 500 MB) and the dataset, so it needs internet access. No Hugging Face account is needed. Without one, `huggingface_hub` prints a warning about unauthenticated requests.
-- The model runs on the CPU, one message at a time, with no batching. On an Apple M4 the two embedding cells together took under two minutes.
+- The model runs on the CPU, one message at a time, with no batching. On an Apple M4 the two embedding cells together took about two minutes.
 
 ### Checked on current versions
 
@@ -75,7 +75,9 @@ Gaussian Naive Bayes printed the same numbers as in 2022, in all three runs. Log
 
 On the 15 messages, Gaussian Naive Bayes, logistic regression and the MLP printed the saved accuracies in every run. The random forest printed 0.7333333333333333, 0.8 and 0.8666666666666667.
 
-Not checked: Google Colab, a GPU, Linux or Windows, and Python versions other than 3.13.
+Later the same day the notebook was run the same way in two more new environments made with the commands above. One was again on Python 3.13.7 and started with an empty Hugging Face cache, so the weights and the dataset were both downloaded there. The other was on Python 3.14.6, where `pip` installed the same package versions. In both, all 33 code cells finished without an error, and Gaussian Naive Bayes and logistic regression printed the same numbers as above.
+
+Not checked: Google Colab, a GPU, Linux or Windows. On Python 3.12 only `pip`'s resolution of the pinned versions was checked, in a dry run; the notebook was not run there.
 
 ## Limitations
 

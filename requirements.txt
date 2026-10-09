@@ -1,6 +1,6 @@
 # Libraries imported by sms_spam_classifier.ipynb, pinned to the versions the
-# notebook was last run with (Python 3.13). See "Running the notebook" in
-# README.md.
+# notebook was last run with (Python 3.13 and 3.14). See "Running the notebook"
+# in README.md.
 datasets==5.1.0
 matplotlib==3.11.2
 numpy==2.5.3
