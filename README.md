@@ -28,11 +28,23 @@ The last cell is interactive: choose one of the four classifiers, type a message
 
 ## Running the notebook
 
-The saved outputs come from Python 3.7 with `transformers` 4.18.0 and `datasets` 2.2.1. That is the only run recorded in this repository, so treat current versions of these libraries as untested.
+The saved outputs come from Python 3.7 with `transformers` 4.18.0 and `datasets` 2.2.1. The notebook has since been run on current versions of these libraries, and `requirements.txt` pins the versions used.
 
-To run it, open `sms_spam_classifier.ipynb` in Google Colab or Jupyter and run the cells from top to bottom.
+To run it in Jupyter, with Python 3.12 or newer:
 
-- The notebook installs `transformers` and `datasets` itself with `pip`, without pinning versions. It also imports `torch`, `scikit-learn`, `pandas`, `numpy`, `matplotlib` and `tqdm`. Colab already had these when the notebook was run; install them first if you run it somewhere else.
+```sh
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt notebook ipywidgets
+jupyter notebook sms_spam_classifier.ipynb
+```
+
+Then run the cells from top to bottom.
+
+- `requirements.txt` lists the libraries the notebook imports, pinned to the versions it was last run with. Those versions need Python 3.12 or newer; the run used 3.13.
+- `notebook` is the Jupyter front end. `ipywidgets` is for the download progress bars; without it the first cell prints a `TqdmWarning`.
+- The notebook also runs `pip install transformers` and `pip install datasets` itself, without pinning versions. In the environment above both lines find the packages already installed and change nothing.
+- In Google Colab, where the saved outputs were produced, `requirements.txt` is not used. The two `pip install` lines take care of `transformers` and `datasets`, and the notebook relies on Colab for the other libraries. Colab has not been tried again since then.
 - The first run downloads the `roberta-base` weights (478M in the saved output) and the dataset, so it needs internet access.
 - The model runs on the CPU, one message at a time, with no batching.
 
